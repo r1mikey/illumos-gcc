@@ -287,6 +287,12 @@ case ${host} in
     extra_parts="$extra_parts crtbeginS.o crtendS.o"
   else
     case ${host} in
+      aarch64*-*-solaris2*)
+        # XXXAARCH64: verify when we've ported
+        # Illumos/aarch64 provides crt1.o, crti.o, crtn.o, and gcrt1.o as
+        # part of the base system.
+        extra_parts="$extra_parts crtbeginS.o crtendS.o"
+        ;;
       i?86-*-solaris2.1[0-9]* | x86_64-*-solaris2.1[0-9]*)
         # Solaris 10+/x86 provides crt1.o, crti.o, crtn.o, and gcrt1.o as
         # part of the base system.
@@ -318,6 +324,10 @@ case ${host} in
 esac
 
 case ${host} in
+aarch64*-*-solaris2*)
+  # XXXAARCH64: seems fishy, should be mprotect as below
+  enable_execute_stack=enable-execute-stack-empty.c
+  ;;
 *-*-darwin* | *-*-dragonfly* | *-*-freebsd* | *-*-netbsd* | *-*-openbsd* | \
   *-*-solaris2*)
   enable_execute_stack=enable-execute-stack-mprotect.c
@@ -349,6 +359,12 @@ aarch64*-*-linux*)
 	md_unwind_header=aarch64/linux-unwind.h
 	tmake_file="${tmake_file} ${cpu_type}/t-aarch64"
 	tmake_file="${tmake_file} ${cpu_type}/t-softfp t-softfp t-crtfm"
+	;;
+aarch64*-*-solaris2*)
+	tmake_file="${tmake_file} ${cpu_type}/t-aarch64 aarch64/t-sol2"
+	tmake_file="${tmake_file} ${cpu_type}/t-softfp t-softfp t-crtfm"
+	extra_parts="$extra_parts crtfastmath.o crtbeginS.o crtendS.o"
+	md_unwind_header=aarch64/aarch64-unwind.h
 	;;
 alpha*-*-linux*)
 	tmake_file="${tmake_file} alpha/t-alpha alpha/t-ieee t-crtfm alpha/t-linux"

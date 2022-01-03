@@ -4898,7 +4898,7 @@ static const int aarch64_nzcv_codes[] =
   0		/* NV, Any.  */
 };
 
-static void
+void
 aarch64_print_operand (FILE *f, rtx x, int code)
 {
   switch (code)

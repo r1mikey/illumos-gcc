@@ -110,10 +110,14 @@
 
 #if TARGET_DATA_MODEL == 1
 #define ABI_SPEC  "-mabi=lp64"
+#if !defined(MULTILIB_DEFAULTS)
 #define MULTILIB_DEFAULTS { "mabi=lp64" }
+#endif
 #elif TARGET_DATA_MODEL == 2
 #define ABI_SPEC  "-mabi=ilp32"
+#if !defined(MULTILIB_DEFAULTS)
 #define MULTILIB_DEFAULTS { "mabi=ilp32" }
+#endif
 #else
 #error "Unknown or undefined TARGET_DATA_MODEL!"
 #endif
